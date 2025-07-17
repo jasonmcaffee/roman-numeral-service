@@ -12,5 +12,9 @@ describe('Client Tests', () => {
       const { input, output } = await api.convertIntegerToRomanNumeral(123);
       expect(input).toBe('123');
     });
+
+    it('should return bad requests when invalid input is provided', async () => {
+      // const { input, output } = await api.convertIntegerToRomanNumeral(123);
+    });
   });
 });

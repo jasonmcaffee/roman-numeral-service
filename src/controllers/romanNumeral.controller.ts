@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query, UsePipes } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
-
 import { RomanNumeralService } from '../services/romanNumeral.service';
 import { ConvertIntegerToRomanNumeralResponse } from '../models/api/models';
+import { ConvertIntegerToRomanNumeralRequestSchema } from '../schemas/api/romanNumeral.schema';
+import { ZodValidationPipe } from '../pipes/zodValidation.pipe';
 
 @ApiTags('RomanNumeral')
 @Controller('')
@@ -14,16 +15,18 @@ export class RomanNumeralController {
     name: 'query',
     type: Number,
     description: 'The integer to convert to a Roman Numeral.',
+    maximum: 3999,
+    minimum: 1,
   })
   @Get('romannumeral')
+  @UsePipes(new ZodValidationPipe(ConvertIntegerToRomanNumeralRequestSchema))
   @ApiResponse({
     status: 200,
     description: 'Conversion result.',
     type: ConvertIntegerToRomanNumeralResponse,
   })
-  convertIntegerToRomanNumeral(@Query('query') integerToConvert: number) {
-    console.log(`${integerToConvert}`);
-    const response = this.romanNumeralService.convertIntegerToRomanNumeral(integerToConvert);
+  convertIntegerToRomanNumeral(@Query() queryParams: { query: number }) {
+    const response = this.romanNumeralService.convertIntegerToRomanNumeral(queryParams.query);
     return response;
   }
 }

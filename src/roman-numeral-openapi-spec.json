@@ -11,6 +11,8 @@
             "in": "query",
             "description": "The integer to convert to a Roman Numeral.",
             "schema": {
+              "minimum": 1,
+              "maximum": 3999,
               "type": "number"
             }
           }
