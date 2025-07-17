@@ -52,7 +52,7 @@ describe('Roman Numeral Service Integration Tests', () => {
 
       const { input: input9, output: output9 } = await api.convertIntegerToRomanNumeral(1918);
       expect(input9).toBe('1918');
-      expect(output9).toBe('MCMX III');
+      expect(output9).toBe('MCMXVIII');
 
       const { input: input10, output: output10 } = await api.convertIntegerToRomanNumeral(1944);
       expect(input10).toBe('1944');

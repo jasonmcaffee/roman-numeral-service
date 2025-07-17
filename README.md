@@ -3,6 +3,9 @@ Webservice that is primarily concerned with operations related to Roman numerals
 
 ## Dependencies
 
+### Nest.js
+Nest.js is a modular framework built in TypeScript on top of Express, which is decorator-driven, allowing us to declaratively define behavior and structure for our classes, methods, and properties.
+
 ### OpenAPI/Swagger
 By using OpenAPI, we ensure downstream services, uis, and other may communicate with our service via a well defined contract.
 
