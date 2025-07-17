@@ -9,15 +9,58 @@ type ValidationError = { message: string; errorDetails: ValidationErrorDetail[] 
  * Integration tests which ensure our server and client work as expected.
  * The server must be up and running before running these.
  */
-describe('Client Tests', () => {
+describe('Roman Numeral Service Integration Tests', () => {
   const apiConfig = new Configuration({ basePath: `http://localhost:${appConfig.getPort()}` });
+  const api = new RomanNumeralApi(apiConfig);
+  describe('convertIntegerToRomanNumeral endpoint', () => {
+    //https://en.wikipedia.org/wiki/Roman_numerals
+    it('should convert integers to roman numeral numerals', async () => {
+      //IV XL CD M
+      //A number containing two or more decimal digits is built by appending the Roman numeral equivalent for each, from highest to lowest, as in the following examples:
+      const { input: input1, output: output1 } = await api.convertIntegerToRomanNumeral(39);
+      expect(input1).toBe('39');
+      expect(output1).toBe('XXXIX');
 
-  describe('Conversation', () => {
-    const api = new RomanNumeralApi(apiConfig);
+      const { input: input2, output: output2 } = await api.convertIntegerToRomanNumeral(246);
+      expect(input2).toBe('246');
+      expect(output2).toBe('CCXLVI');
 
-    it('should convert int to roman numeral', async () => {
-      const { input, output } = await api.convertIntegerToRomanNumeral(123);
-      expect(input).toBe('123');
+      const { input: input3, output: output3 } = await api.convertIntegerToRomanNumeral(789);
+      expect(input3).toBe('789');
+      expect(output3).toBe('DCCLXXXIX');
+
+      //Any missing place (represented by a zero in the place-value equivalent) is omitted, as in Latin (and English) speech:
+      const { input: input4, output: output4 } = await api.convertIntegerToRomanNumeral(160);
+      expect(input4).toBe('160');
+      expect(output4).toBe('CLX');
+
+      const { input: input5, output: output5 } = await api.convertIntegerToRomanNumeral(207);
+      expect(input5).toBe('207');
+      expect(output5).toBe('CCVII');
+
+      const { input: input6, output: output6 } = await api.convertIntegerToRomanNumeral(1009);
+      expect(input6).toBe('1009');
+      expect(output6).toBe('MIX');
+
+      const { input: input7, output: output7 } = await api.convertIntegerToRomanNumeral(1066);
+      expect(input7).toBe('1066');
+      expect(output7).toBe('MLXVI');
+
+      const { input: input8, output: output8 } = await api.convertIntegerToRomanNumeral(1776);
+      expect(input8).toBe('1776');
+      expect(output8).toBe('MDCCLXXVI');
+
+      const { input: input9, output: output9 } = await api.convertIntegerToRomanNumeral(1918);
+      expect(input9).toBe('1918');
+      expect(output9).toBe('MCMX III');
+
+      const { input: input10, output: output10 } = await api.convertIntegerToRomanNumeral(1944);
+      expect(input10).toBe('1944');
+      expect(output10).toBe('MCMXLIV');
+
+      const { input: input11, output: output11 } = await api.convertIntegerToRomanNumeral(2025);
+      expect(input11).toBe('2025');
+      expect(output11).toBe('MMXXV');
     });
 
     it('should return a bad request error when input value is too small', async () => {

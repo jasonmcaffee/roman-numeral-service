@@ -4,7 +4,7 @@ import { $ZodIssue } from 'zod/v4/core/errors';
 import { ValidationErrorDetail } from '../models/errors/ValidationErrorDetail';
 import { InputValidationError } from '../models/errors/inputValidation.error';
 
-export function validateUsingZodSchema<TInputType>(input: TInputType, schema: ZodType<any, any, any>) {
+export function validateUsingZodSchema<TInputType, TOutputType>(input: TInputType, schema: ZodType<TOutputType, TInputType, any>) {
   const result = schema.safeParse(input);
 
   if (result.success) {
