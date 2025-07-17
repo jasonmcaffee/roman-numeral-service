@@ -30,3 +30,14 @@ npm run start:dev
 Ensure you have docker desktop installed.
 
 See package.json for running in other environments.
+
+## Client Generation
+To help ensure our service behaves as expected, as well as ensure our schemas are properly defined, we generate a typescript client
+from our generated roman-numeral-openapi-spec.json, and the run tests using the generated client.
+
+### Generating the Client
+
+```shell
+npm run generate-client
+```
+The generated client can be found under src/clients/roman-numeral-client

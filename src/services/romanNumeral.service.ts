@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { ConvertIntegerToRomanNumeralResponse } from '../models/api/models';
 
 @Injectable()
 export class RomanNumeralService {
   constructor() {}
-  convertIntegerToRomanNumeral(numberToConvert: number){
+  convertIntegerToRomanNumeral(numberToConvert: number): ConvertIntegerToRomanNumeralResponse {
     console.log(`convertIntegerToRomanNumeral called with ${numberToConvert}`);
-    return '';
+    const result = 'CCXLVI';
+    return { input: numberToConvert.toString(), output: result };
   }
 }

@@ -11,7 +11,7 @@ export class RomanNumeralController {
 
   @ApiOperation({ summary: 'Convert a number to a roman numeral' })
   @ApiQuery({
-    name: 'integerToConvert',
+    name: 'query',
     type: Number,
     description: 'The integer to convert to a Roman Numeral.',
   })
@@ -21,7 +21,7 @@ export class RomanNumeralController {
     description: 'Conversion result.',
     type: ConvertIntegerToRomanNumeralResponse,
   })
-  convertIntegerToRomanNumeral(@Query('integerToConvert') integerToConvert: number) {
+  convertIntegerToRomanNumeral(@Query('query') integerToConvert: number) {
     console.log(`${integerToConvert}`);
     const response = this.romanNumeralService.convertIntegerToRomanNumeral(integerToConvert);
     return response;

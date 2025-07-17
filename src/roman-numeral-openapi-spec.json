@@ -6,7 +6,7 @@
         "operationId": "convertIntegerToRomanNumeral",
         "parameters": [
           {
-            "name": "integerToConvert",
+            "name": "query",
             "required": true,
             "in": "query",
             "description": "The integer to convert to a Roman Numeral.",
