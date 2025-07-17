@@ -1,28 +1,30 @@
-import { PipeTransform, ArgumentMetadata, BadRequestException } from '@nestjs/common';
+import { PipeTransform, BadRequestException } from '@nestjs/common';
 import { ZodType } from 'zod';
+import { validateUsingZodSchema } from '../utils/validate.util';
+import { InputValidationError } from '../models/errors/inputValidation.error';
 
+/**
+ * Pipeline which allows us to wire up our controllers to zod schema validation.
+ */
 export class ZodValidationPipe implements PipeTransform {
   constructor(private schema: ZodType<any, any, any>) {}
 
-  transform(value: unknown, metadata: ArgumentMetadata) {
-    const result = this.schema.safeParse(value);
-
-    if (result.success) {
+  /**
+   * Wire up controller request pipeline to our input validation mechanism.
+   * @param value - request input value to be validated.
+   */
+  transform(value: unknown) {
+    try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return result.data;
+      return validateUsingZodSchema(value, this.schema);
+    } catch (e) {
+      if (e instanceof InputValidationError) {
+        throw new BadRequestException({
+          message: 'Validation failed',
+          errorDetails: e.errorDetails,
+        });
+      }
+      throw e;
     }
-
-    // Gather error details safely from ZodError's 'issues' array, so the client gets specific messages like:
-    // "Number must be less than or equal to 3999" for exceeding max
-    const errors = result.error.issues.map((issue) => ({
-      path: issue.path.join('.'),
-      message: issue.message,
-      code: issue.code,
-    }));
-
-    throw new BadRequestException({
-      message: 'Validation failed',
-      errors,
-    });
   }
 }

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Delete, Param, Body, Query, UsePipes } from
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { RomanNumeralService } from '../services/romanNumeral.service';
 import { ConvertIntegerToRomanNumeralResponse } from '../models/api/models';
-import { ConvertIntegerToRomanNumeralRequestSchema } from '../schemas/api/romanNumeral.schema';
+import { convertIntegerToRomanNumeralRequestSchema } from '../schemas/api/romanNumeral.schema';
 import { ZodValidationPipe } from '../pipes/zodValidation.pipe';
 
 @ApiTags('RomanNumeral')
@@ -19,7 +19,7 @@ export class RomanNumeralController {
     minimum: 1,
   })
   @Get('romannumeral')
-  @UsePipes(new ZodValidationPipe(ConvertIntegerToRomanNumeralRequestSchema))
+  @UsePipes(new ZodValidationPipe(convertIntegerToRomanNumeralRequestSchema))
   @ApiResponse({
     status: 200,
     description: 'Conversion result.',
