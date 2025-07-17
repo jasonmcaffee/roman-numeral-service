@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Configuration, RomanNumeralApi } from '../../clients/roman-numeral-client';
 import appConfig from '../../config/appConfig';
 import * as runtime from '../../clients/roman-numeral-client/runtime';
-import { ValidationErrorDetail } from '../../models/errors/ValidationErrorDetail';
+import { ValidationErrorDetail } from '../../types/validationErrorDetail.type';
 type ValidationError = { message: string; errorDetails: ValidationErrorDetail[] };
 
 /**

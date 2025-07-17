@@ -1,5 +1,5 @@
-export interface ValidationErrorDetail {
+export type ValidationErrorDetail = {
   path: string;
   message: string;
   code: string;
-}
+};

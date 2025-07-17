@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, Query, UsePipes } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { RomanNumeralService } from '../services/romanNumeral.service';
-import { ConvertIntegerToRomanNumeralResponse } from '../models/api/models';
+import { ConvertIntegerToRomanNumeralResponse } from '../models/api/convertIntegerToRomanNumeralResponse.model';
 import { convertIntegerToRomanNumeralRequestSchema } from '../schemas/api/romanNumeral.schema';
 import { ZodValidationPipe } from '../pipes/zodValidation.pipe';
 

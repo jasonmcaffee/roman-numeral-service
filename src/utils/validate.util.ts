@@ -1,7 +1,7 @@
 import { ZodType } from 'zod';
 import { BadRequestException } from '@nestjs/common';
 import { $ZodIssue } from 'zod/v4/core/errors';
-import { ValidationErrorDetail } from '../models/errors/ValidationErrorDetail';
+import { ValidationErrorDetail } from '../types/validationErrorDetail.type';
 import { InputValidationError } from '../models/errors/inputValidation.error';
 
 export function validateUsingZodSchema<TInputType, TOutputType>(input: TInputType, schema: ZodType<TOutputType, TInputType, any>) {

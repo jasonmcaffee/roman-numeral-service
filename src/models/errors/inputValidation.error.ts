@@ -1,4 +1,4 @@
-import { ValidationErrorDetail } from './ValidationErrorDetail';
+import { ValidationErrorDetail } from '../../types/validationErrorDetail.type';
 
 export class InputValidationError extends Error {
   constructor(public readonly errorDetails: ValidationErrorDetail[]) {
