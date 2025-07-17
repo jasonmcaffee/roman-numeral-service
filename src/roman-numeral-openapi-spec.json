@@ -1,0 +1,66 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/romannumeral": {
+      "get": {
+        "operationId": "convertIntegerToRomanNumeral",
+        "parameters": [
+          {
+            "name": "integerToConvert",
+            "required": true,
+            "in": "query",
+            "description": "The integer to convert to a Roman Numeral.",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversion result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConvertIntegerToRomanNumeralResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Convert a number to a roman numeral",
+        "tags": [
+          "RomanNumeral"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Roman Numeral API",
+    "description": "API for Roman numeral conversions",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "ConvertIntegerToRomanNumeralResponse": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "original input integer provided to convert "
+          },
+          "output": {
+            "type": "string",
+            "description": "result "
+          }
+        },
+        "required": [
+          "input",
+          "output"
+        ]
+      }
+    }
+  }
+}
