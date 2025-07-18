@@ -52,6 +52,10 @@ We use swagger annotations to decorate our controllers and models, so that we ma
 #### OpenAPI spec generation
 The OpenAPI spec is generated when we start the service, and written to src/roman-numeral-openapi-spec.json
 
+#### API Docs
+The api docs can be viewed a the /api endpoint, and allow for viewing and trying out the various endpoints.
+http://localhost:1337/api
+![img_4.png](img_4.png)
 ## Dev Setup
 Install node.js and dependencies
 ```shell
@@ -75,7 +79,7 @@ If you want local spans, logs, etc to go to datatog, you'll need to run the data
 
 ```shell
 docker run -d --name dd-agent \
-  -e DD_API_KEY=442a78ca506fed3b4ffd4453de073fd2 \
+  -e DD_API_KEY=<api key> \
   -e DD_SITE="us5.datadoghq.com" \
   -e DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true \
   -e DD_LOGS_ENABLED=true \
