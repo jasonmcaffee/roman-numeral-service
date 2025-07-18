@@ -5,6 +5,7 @@ import { ConvertIntegerToRomanNumeralResponse } from '../models/api/convertInteg
 import { convertIntegerToRomanNumeralRequestSchema } from '../schemas/api/romanNumeral.schema';
 import { ZodValidationPipe } from '../pipes/zodValidation.pipe';
 import { Span } from 'nestjs-ddtrace';
+import { InputValidationError } from '../models/errors/inputValidation.error';
 
 @ApiTags('RomanNumeral')
 @Controller('')
@@ -25,6 +26,11 @@ export class RomanNumeralController {
     status: 200,
     description: 'Conversion result.',
     type: ConvertIntegerToRomanNumeralResponse,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Input validation error',
+    type: InputValidationError,
   })
   @Span('RomanNumeralController.convertIntegerToRomanNumeral')
   convertIntegerToRomanNumeral(@Query() queryParams: { query: number }) {

@@ -22,6 +22,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.useLogger(app.get(PinoLogger));
   await generateOpenApiSpecAndWriteItToDisk(app);
+  //enable cors
+  app.enableCors({
+    origin: '*', //We can make this more restrictive by host, but for now, anyone is allowed to use our service from any site.
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   const port = appConfig.getPort();
   const logger = new Logger('main');
   logger.log(`App started and is listening on port: ${port}`);

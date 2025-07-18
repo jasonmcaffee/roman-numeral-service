@@ -63,6 +63,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Input validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
           }
         },
         "summary": "Convert a number to a roman numeral",
@@ -97,6 +107,44 @@
         "required": [
           "input",
           "output"
+        ]
+      },
+      "ValidationErrorDetail": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "path where the error occurred"
+          },
+          "message": {
+            "type": "string",
+            "description": "error message"
+          },
+          "code": {
+            "type": "string",
+            "description": "error code"
+          }
+        },
+        "required": [
+          "path",
+          "message",
+          "code"
+        ]
+      },
+      "InputValidationError": {
+        "type": "object",
+        "properties": {
+          "errorDetails": {
+            "description": "Collection of further details.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ValidationErrorDetail"
+              }
+            ]
+          }
+        },
+        "required": [
+          "errorDetails"
         ]
       }
     }
