@@ -1,5 +1,13 @@
-# Roman Numeral Converter Service
+# Roman Numeral Service
 Webservice that is primarily concerned with operations related to Roman numerals, such as converting integers to Roman numerals.
+
+## Quick Validation
+```shell
+make docker-run
+curl "http://localhost:3000/romannumeral?query=123"
+# Replies with: {"input":"123","output":"CXXIII"}
+make docker-stop
+```
 
 ## Project Structure
 The project uses a layered architecture, with separation of concerns broken down into services, controllers, models, repositories, etc.
@@ -74,6 +82,7 @@ The OpenAPI spec is generated when we start the service, and written to src/roma
 The api docs can be viewed a the /api endpoint, and allow for viewing and trying out the various endpoints.
 http://localhost:1337/api
 ![img_4.png](img_4.png)
+
 ## Dev Setup
 Install node.js and dependencies
 ```shell
@@ -111,10 +120,24 @@ npm run start:dev
 ```
 
 ### Running with Docker
-Ensure you have docker desktop installed.
+The service is now fully containerized with Docker support. See [DOCKER.md](DOCKER.md) for detailed Docker instructions.
 
-See package.json for running in other environments.
+#### Quick Start with Docker
+```shell
+# Production mode
+docker-compose up --build
 
+# Development mode with hot reloading
+docker-compose -f docker-compose.dev.yml up --build
+
+# With DataDog monitoring
+docker-compose --profile monitoring up --build
+
+# Stop
+docker-compose down
+```
+
+For additional docker documentation and convenience , reference the [DOCKER.md](DOCKER.md) and [Makefile](Makefile)
 #### datadog agent
 If you want local spans, logs, etc to go to datatog, you'll need to run the datadog-agent container
 
