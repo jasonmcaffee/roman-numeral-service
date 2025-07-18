@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RomanNumeralService } from '../../services/romanNumeral.service';
-import { PlaceValues } from '../../types/placeValues.type';
+import { PlaceValues } from '../../models/types/placeValues.type';
+import { TraceService } from 'nestjs-ddtrace';
 
 /**
  * Unit tests to help test isolated functions that are relatively complex.
@@ -8,10 +9,21 @@ import { PlaceValues } from '../../types/placeValues.type';
  */
 describe('Roman Numeral Service Unit Tests', () => {
   let testingModule: TestingModule;
+  const mockTraceService = {
+    getActiveSpan: jest.fn().mockReturnValue({
+      setTag: jest.fn(),
+    }),
+  };
   //set up our dependency injection (@Injectable). Since RomanNumeralService doesn't have any dependencies, we just need to register it alone.
   beforeAll(async () => {
     testingModule = await Test.createTestingModule({
-      providers: [RomanNumeralService],
+      providers: [
+        RomanNumeralService,
+        {
+          provide: TraceService,
+          useValue: mockTraceService,
+        },
+      ],
     }).compile();
   });
   describe('roman numeral service', () => {

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConvertIntegerToRomanNumeralResponse } from '../models/api/convertIntegerToRomanNumeralResponse.model';
 import { validateUsingZodSchema } from '../utils/validate.util';
 import { integerToRomanNumeralSchema } from '../schemas/api/romanNumeral.schema';
-import { PlaceValues } from '../types/placeValues.type';
+import { PlaceValues } from '../models/types/placeValues.type';
 import { TraceService, Span } from 'nestjs-ddtrace';
 
 @Injectable()

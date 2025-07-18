@@ -1,6 +1,24 @@
 # Roman Numeral Converter Service
 Webservice that is primarily concerned with operations related to Roman numerals, such as converting integers to Roman numerals.
 
+## Project Structure
+The project uses a layered architecture, with separation of concerns broken down into services, controllers, models, repositories, etc.
+
+### Controllers
+Responsible for encapsulating http.  Wire up incoming request validation, and communicate with the service layer.
+
+### Services
+Contain business logic, and orchestration with repositories, models, and other services.
+
+### Models
+Primarily data contracts for both internal types (errors, interfaces, classes, etc), and our api (requests, responses).
+
+### Schemas
+Zod schemas used in validating incoming requests, provide appropriate error messaging, etc.
+
+### Repositories
+Not needed yet in this project, but this is where we encapsulate db interactions for CRUD operations.
+
 ## Dependencies
 
 ### Nest.js
@@ -62,6 +80,29 @@ Install node.js and dependencies
 brew install node
 npm install
 ```
+
+## Tests
+Our project has unit and integration tests for ensuring our service functionality is correct.
+
+Run tests using:
+```shell
+npm run test
+npm run test:unit
+npm run test:integration
+```
+
+### Unit
+Our unit tests test our services functions, and other business logic, so we can validate relatively complex business logic.
+
+### Integration
+Integration tests ensure the service actually behaves correctly when running.  
+Often times in unit tests we have to mock out key pieces of functionality, and are unable to validate the service as a whole works as expected.
+
+Our integration tests use the client we generate from our openapi specs to call endpoints on a running instance of the service.
+
+In them, we ensure our outputs are correct, and our error codes return the expected error details.
+
+Note: integration tests need a running service to communicate with (eg. your local running service, or a test environment)
 
 ## Running The Service
 To run the service locally, run:

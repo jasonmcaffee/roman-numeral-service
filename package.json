@@ -14,10 +14,11 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
+    "test:unit": "jest --testPathPattern=src/test/unit",
+    "test:integration": "jest --testPathPattern=src/test/integration",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
     "generate-client": "npx openapi-generator-cli generate -i src/roman-numeral-openapi-spec.json -g typescript-fetch -o ./src/clients/roman-numeral-client --additional-properties=useSingleRequestParameter=false"
   },
   "dependencies": {
