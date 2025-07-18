@@ -2,6 +2,7 @@
 import tracer from 'dd-trace';
 tracer.init({
   logInjection: true,
+  runtimeMetrics: true, //send cpu, etc
   url: 'http://localhost:8126',
 });
 import { NestFactory } from '@nestjs/core';

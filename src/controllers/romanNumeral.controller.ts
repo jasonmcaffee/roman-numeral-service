@@ -26,7 +26,7 @@ export class RomanNumeralController {
     description: 'Conversion result.',
     type: ConvertIntegerToRomanNumeralResponse,
   })
-  @Span('RomanNumeralController.convertIntegerToRomanNumeral') // <--- ADD THIS
+  @Span('RomanNumeralController.convertIntegerToRomanNumeral')
   convertIntegerToRomanNumeral(@Query() queryParams: { query: number }) {
     const response = this.romanNumeralService.convertIntegerToRomanNumeral(queryParams.query);
     return response;

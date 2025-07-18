@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConvertIntegerToRomanNumeralResponse } from '../models/api/convertIntegerToRomanNumeralResponse.model';
 import { validateUsingZodSchema } from '../utils/validate.util';
 import { integerToRomanNumeralSchema } from '../schemas/api/romanNumeral.schema';
@@ -7,6 +7,7 @@ import { TraceService, Span } from 'nestjs-ddtrace';
 
 @Injectable()
 export class RomanNumeralService {
+  private readonly logger = new Logger(RomanNumeralService.name);
   constructor(private readonly traceService: TraceService) {}
 
   /**
@@ -15,6 +16,7 @@ export class RomanNumeralService {
    */
   @Span('convertIntegerToRomanNumeral')
   convertIntegerToRomanNumeral(integerToConvert: number): ConvertIntegerToRomanNumeralResponse {
+    this.logger.log(`convertIntegerToRomanNumeral called with ${integerToConvert}`);
     this.traceService.getActiveSpan()?.setTag('input.integer', integerToConvert);
     //this is validated at the controller already, but we can make extra sure that future use cases have appropriate validation as well.
     validateUsingZodSchema(integerToConvert, integerToRomanNumeralSchema);
