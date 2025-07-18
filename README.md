@@ -6,6 +6,23 @@ Webservice that is primarily concerned with operations related to Roman numerals
 ### Nest.js
 Nest.js is a modular framework built in TypeScript on top of Express, which is decorator-driven, allowing us to declaratively define behavior and structure for our classes, methods, and properties.
 
+### DataDog
+We use DataDog to accomplish the objective of 3 pillars of observability: Metrics, Logs, Traces
+
+#### nestjs-ddtrace
+Makes it easier to integrate nestjs and DataDog
+
+#### span
+A span is a granular, traceable record of an operation in our code.
+They help us visualize, measure, and diagnose individual steps with a distributed request, giving us end to end observability.
+
+##### tag
+A key value pair of metadata added to a span, which allow us to attach additional info that is searchable. 
+e.g. user ids, request params, operation types, or results.
+
+### nestjs-pino
+Platform agnostic logger for nestjs, base on Pino, with request context in every log.
+
 ### OpenAPI/Swagger
 By using OpenAPI, we ensure downstream services, uis, and other may communicate with our service via a well defined contract.
 
@@ -33,6 +50,27 @@ npm run start:dev
 Ensure you have docker desktop installed.
 
 See package.json for running in other environments.
+
+#### datadog agent
+If you want local spans, logs, etc to go to datatog, you'll need to run the datadog-agent container
+
+```shell
+docker run -d --name dd-agent \
+-e DD_API_KEY=442a78ca506fed3b4ffd4453de073fd2 \
+-e DD_SITE="us5.datadoghq.com" \
+-e DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true \
+-p 8126:8126 \
+-v /var/run/docker.sock:/var/run/docker.sock:ro \
+-v /proc/:/host/proc/:ro \
+-v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
+-v /var/lib/docker/containers:/var/lib/docker/containers:ro \
+gcr.io/datadoghq/agent:7
+
+```
+
+```shell
+docker exec -it dd-agent agent status
+```
 
 ## Client Generation
 To help ensure our service behaves as expected, as well as ensure our schemas are properly defined, we generate a typescript client

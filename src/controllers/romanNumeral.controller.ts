@@ -4,6 +4,7 @@ import { RomanNumeralService } from '../services/romanNumeral.service';
 import { ConvertIntegerToRomanNumeralResponse } from '../models/api/convertIntegerToRomanNumeralResponse.model';
 import { convertIntegerToRomanNumeralRequestSchema } from '../schemas/api/romanNumeral.schema';
 import { ZodValidationPipe } from '../pipes/zodValidation.pipe';
+import { Span } from 'nestjs-ddtrace';
 
 @ApiTags('RomanNumeral')
 @Controller('')
@@ -25,6 +26,7 @@ export class RomanNumeralController {
     description: 'Conversion result.',
     type: ConvertIntegerToRomanNumeralResponse,
   })
+  @Span('RomanNumeralController.convertIntegerToRomanNumeral') // <--- ADD THIS
   convertIntegerToRomanNumeral(@Query() queryParams: { query: number }) {
     const response = this.romanNumeralService.convertIntegerToRomanNumeral(queryParams.query);
     return response;

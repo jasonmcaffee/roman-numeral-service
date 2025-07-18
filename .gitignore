@@ -2,7 +2,7 @@
 /dist
 /node_modules
 /build
-
+/env/.dd_api_key
 # Logs
 logs
 *.log

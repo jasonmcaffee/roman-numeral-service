@@ -12,6 +12,12 @@ const appConfig = {
     }
     return port;
   },
+  getEnv(): string | undefined {
+    return process.env.ENV;
+  },
+  isProduction() {
+    return appConfig.getEnv() === 'PROD';
+  },
 };
 
 export default appConfig;

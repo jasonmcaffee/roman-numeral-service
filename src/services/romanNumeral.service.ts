@@ -3,22 +3,32 @@ import { ConvertIntegerToRomanNumeralResponse } from '../models/api/convertInteg
 import { validateUsingZodSchema } from '../utils/validate.util';
 import { integerToRomanNumeralSchema } from '../schemas/api/romanNumeral.schema';
 import { PlaceValues } from '../types/placeValues.type';
+import { TraceService, Span } from 'nestjs-ddtrace';
 
 @Injectable()
 export class RomanNumeralService {
-  constructor() {}
-  convertIntegerToRomanNumeral(numberToConvert: number): ConvertIntegerToRomanNumeralResponse {
+  constructor(private readonly traceService: TraceService) {}
+
+  /**
+   * Converts an integer in range 1-3999 to a Roman numeral.
+   * @param integerToConvert - number to convert to a Roman numeral.
+   */
+  @Span('convertIntegerToRomanNumeral')
+  convertIntegerToRomanNumeral(integerToConvert: number): ConvertIntegerToRomanNumeralResponse {
+    this.traceService.getActiveSpan()?.setTag('input.integer', integerToConvert);
     //this is validated at the controller already, but we can make extra sure that future use cases have appropriate validation as well.
-    validateUsingZodSchema(numberToConvert, integerToRomanNumeralSchema);
-    const placeValues = this.convertIntegerIntoPlaceValues(numberToConvert);
+    validateUsingZodSchema(integerToConvert, integerToRomanNumeralSchema);
+    const placeValues = this.convertIntegerIntoPlaceValues(integerToConvert);
     const romanNumeral = this.convertPlaceValuesIntoRomanNumerals(placeValues);
-    return { input: numberToConvert.toString(), output: romanNumeral };
+    this.traceService.getActiveSpan()?.setTag('result.romanNumeral', romanNumeral);
+    return { input: integerToConvert.toString(), output: romanNumeral };
   }
   /**
    * Split the number into separate numbers at their appropriate place values.
    * e.g. 3412 = { units: 2, tens: 1, hundreds: 4, thousands: 3 }
    * @param num - number to convert to place values.
    */
+  @Span('convertIntegerIntoPlaceValues')
   convertIntegerIntoPlaceValues(num: number): PlaceValues {
     //use modulus to get remainder
     return {
@@ -37,6 +47,7 @@ export class RomanNumeralService {
    * Convert our PlaceValues object, which has units, tens, etc broken out, into a full Roman numeral string.
    * @param placeValues - object with units, tens, etc representation of an integer.
    */
+  @Span('convertPlaceValuesIntoRomanNumerals')
   convertPlaceValuesIntoRomanNumerals(placeValues: PlaceValues) {
     const unitsRomanNumerals = this.convertUnitPlaceValueToRomanNumeral(placeValues.units);
     const tensRomanNumerals = this.convertTensPlaceValueToRomanNumeral(placeValues.tens);
