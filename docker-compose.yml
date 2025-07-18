@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  roman-numeral-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: roman-numeral-service
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - ENV=PROD
+    volumes:
+      - ./env:/app/env:ro
+      - roman-numeral-logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - roman-numeral-network
+
+  # Optional: DataDog Agent for monitoring
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:7
+    container_name: dd-agent
+    environment:
+      - DD_API_KEY=${DD_API_KEY:-}
+      - DD_SITE=us5.datadoghq.com
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+      - DD_LOGS_ENABLED=true
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - roman-numeral-logs:/var/log/roman-numeral-service:ro
+    ports:
+      - "8126:8126"  # APM
+      - "8125:8125/udp"  # StatsD
+    restart: unless-stopped
+    profiles:
+      - monitoring
+    networks:
+      - roman-numeral-network
+
+volumes:
+  roman-numeral-logs:
+    driver: local
+
+networks:
+  roman-numeral-network:
+    driver: bridge 
