@@ -1,3 +1,4 @@
+//ONLY import tracer at the top of main.ts and initialize before EVERYTHING else.
 import tracer from 'dd-trace';
 tracer.init({
   logInjection: true,
