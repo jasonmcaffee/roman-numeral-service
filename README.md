@@ -37,20 +37,19 @@ We use DataDog to accomplish the objective of 3 pillars of observability: Metric
 
 #### Dashboards
 
-##### APM 
-###### Services Explorer
+##### Services Explorer
 We can see our roman numeral service's requests, errors, p99, p50, etc latency
 ![img_1.png](img_1.png)
 
-###### Runtime Metrics
+##### Runtime Metrics
 We can see our cpu usage, memory usage, heap space, garbage collection pause time, etc on the Node Runtime Metrics Dashboard.
 ![img_2.png](img_2.png)
 
-###### Traces Explorer
-We can see our spans (convertIntegerToRomanNumeral, etc) in the APM Traces Explorer, along with breakdowns of
+##### Traces Explorer
+We can see our spans (convertIntegerToRomanNumeral, etc) in the APM Traces Explorer, along with breakdowns of each span we created in the code.
 ![img.png](img.png)
 
-###### Logs Explorer
+##### Logs Explorer
 We can see our logs from our service, including log messages, request headers, etc
 ![img_3.png](img_3.png)
 
