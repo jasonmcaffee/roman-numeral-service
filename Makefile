@@ -1,13 +1,12 @@
-# Makefile for Roman Numeral Service Docker Operations=
-.PHONY: build-and-run stop docker-build docker-run docker-logs
+.PHONY: build-and-run stop docker-build docker-run docker-logs test
 
 build-and-run:
-    DD_API_KEY=442a78ca506fed3b4ffd4453de073fd2 docker-compose --profile monitoring up -d --build
+	@echo "Building and running roman-numeral-service with datadog using command line env var DD_API_KEY: $$DD_API_KEY"
+	docker-compose --profile monitoring up -d --build
 
 stop:
 	docker-compose down
 
-# Docker commands
 docker-build:
 	docker build -t roman-numeral-service:latest .
 

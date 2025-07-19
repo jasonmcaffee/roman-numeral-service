@@ -13,6 +13,8 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - ENV=PROD
+      - DD_API_KEY=${DD_API_KEY:-}
+      - DD_AGENT_HOST=datadog-agent
     volumes:
       - ./env:/app/env:ro
       - roman-numeral-logs:/app/logs
@@ -25,8 +27,10 @@ services:
       start_period: 40s
     networks:
       - roman-numeral-network
+    labels:
+      - "com.datadoghq.ad.logs=[{\"source\": \"roman-numeral-service\", \"service\": \"roman-numeral-service\"}]"
 
-  # Optional: DataDog Agent for monitoring
+  # DataDog Agent for monitoring
   datadog-agent:
     image: gcr.io/datadoghq/agent:7
     container_name: dd-agent
@@ -37,12 +41,17 @@ services:
       - DD_LOGS_ENABLED=true
       - DD_APM_ENABLED=true
       - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_COLLECT_KUBERNETES_EVENTS=false
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_CONTAINER_EXCLUDE="name:datadog-agent"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - roman-numeral-logs:/var/log/roman-numeral-service:ro
+      - ./datadog.yaml:/etc/datadog-agent/datadog.yaml:ro
+      - ./conf.d:/etc/datadog-agent/conf.d:ro
     ports:
       - "8126:8126"  # APM
       - "8125:8125/udp"  # StatsD

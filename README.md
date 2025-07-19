@@ -136,41 +136,18 @@ For additional docker documentation and convenience , reference the [Makefile](M
 #### datadog agent
 If you want local spans, logs, etc to go to datatog, you'll need to run the datadog-agent container
 
-```shell
-docker run -d --name dd-agent \
-  -e DD_API_KEY=<api key> \
-  -e DD_SITE="us5.datadoghq.com" \
-  -e DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true \
-  -e DD_LOGS_ENABLED=true \
-  -p 8126:8126 \
-  -v /var/run/docker.sock:/var/run/docker.sock:ro \
-  -v /proc/:/host/proc/:ro \
-  -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
-  -v /var/lib/docker/containers:/var/lib/docker/containers:ro \
-  -v /app/logs/roman-numeral-service.log:/var/log/roman-numeral-service.log:ro \
-  -v /tmp/roman-numeral-service.d:/conf.d/roman-numeral-service.d:ro \
-  gcr.io/datadoghq/agent:7
-```
+##### conf.d
+Log configurations passed to datadog when running docker compose.  see [docker-compose.yml](docker-compose.yml)
 
+##### datdog.yaml
+Datadog config passed to datadog when running docker compose.
+
+##### Misc 
 Useful command to see if APM, Logs, etc are running and receiving input:
 ```shell
 docker exec -it dd-agent agent status
 ```
 
-To get logs working from local process outside of docker:
-```shell
-mkdir -p /tmp/roman-numeral-service.d
-
-cat > /tmp/roman-numeral-service.d/conf.yaml <<EOF
-logs:
-  - type: file
-    path: /var/log/roman-numeral-service.log
-    service: roman-numeral-service
-    source: nodejs
-EOF
-
-
-```
 ## Client Generation
 To help ensure our service behaves as expected, as well as ensure our schemas are properly defined, we generate a typescript client
 from our generated roman-numeral-openapi-spec.json, and the run tests using the generated client.
