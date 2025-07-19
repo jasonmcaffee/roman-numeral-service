@@ -5,7 +5,9 @@ import { ApiProperty } from '@nestjs/swagger';
  * Provide details to the client around the type of error that occurred.
  */
 export class InputValidationError extends Error {
-  @ApiProperty({ description: 'Collection of further details.', type: ValidationErrorDetail })
+  @ApiProperty({ description: 'The error message.', example: 'Input validation failed' })
+  message: string;
+  @ApiProperty({ description: 'Collection of further details.', type: [ValidationErrorDetail] })
   public readonly errorDetails: ValidationErrorDetail[];
   constructor(errorDetails: ValidationErrorDetail[]) {
     super('Input validation failed');

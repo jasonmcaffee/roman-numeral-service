@@ -1,9 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { Configuration, RomanNumeralApi } from '../../clients/roman-numeral-client';
+import { Configuration, RomanNumeralApi, InputValidationError } from '../../clients/roman-numeral-client';
 import appConfig from '../../config/appConfig';
 import * as runtime from '../../clients/roman-numeral-client/runtime';
-import { ValidationErrorDetail } from '../../models/api/validationErrorDetail.model';
-type ValidationError = { message: string; errorDetails: ValidationErrorDetail[] };
 
 /**
  * Integration tests which ensure our server and client work as expected.
@@ -64,7 +61,7 @@ describe('Roman Numeral Service Integration Tests', () => {
     });
 
     it('should return a bad request error when input value is too small', async () => {
-      const expectedValidationError: ValidationError = {
+      const expectedValidationError: InputValidationError = {
         message: 'Validation failed',
         errorDetails: [
           {
@@ -80,7 +77,7 @@ describe('Roman Numeral Service Integration Tests', () => {
     });
 
     it('should return a bad request error when input value is too big', async () => {
-      const expectedValidationError: ValidationError = {
+      const expectedValidationError: InputValidationError = {
         message: 'Validation failed',
         errorDetails: [
           {
@@ -96,7 +93,7 @@ describe('Roman Numeral Service Integration Tests', () => {
     });
 
     it('should return a bad request error when input value is not a number', async () => {
-      const expectedValidationError: ValidationError = {
+      const expectedValidationError: InputValidationError = {
         message: 'Validation failed',
         errorDetails: [
           {
@@ -115,15 +112,14 @@ describe('Roman Numeral Service Integration Tests', () => {
 });
 
 //helper function that ensures the service is returning a 400 with validation error details.
-async function ensureValidationErrorIsReturned(func: () => Promise<void>, expectedValidationError: ValidationError) {
+async function ensureValidationErrorIsReturned(func: () => Promise<void>, expectedValidationError: InputValidationError) {
   try {
     await func();
     fail('Expected an error but none were thrown.');
   } catch (err: unknown) {
     if (err instanceof runtime.ResponseError) {
       expect(err.response.status).toBe(400);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const body = await err.response.json();
+      const body = (await err.response.json()) as InputValidationError;
       expect(body).toEqual(expectedValidationError);
     } else {
       throw err;

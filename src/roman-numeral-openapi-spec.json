@@ -134,16 +134,21 @@
       "InputValidationError": {
         "type": "object",
         "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message.",
+            "example": "Input validation failed"
+          },
           "errorDetails": {
             "description": "Collection of further details.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ValidationErrorDetail"
-              }
-            ]
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationErrorDetail"
+            }
           }
         },
         "required": [
+          "message",
           "errorDetails"
         ]
       }

@@ -28,17 +28,24 @@ import {
  */
 export interface InputValidationError {
     /**
-     * Collection of further details.
-     * @type {ValidationErrorDetail}
+     * The error message.
+     * @type {string}
      * @memberof InputValidationError
      */
-    errorDetails: ValidationErrorDetail;
+    message: string;
+    /**
+     * Collection of further details.
+     * @type {Array<ValidationErrorDetail>}
+     * @memberof InputValidationError
+     */
+    errorDetails: Array<ValidationErrorDetail>;
 }
 
 /**
  * Check if a given object implements the InputValidationError interface.
  */
 export function instanceOfInputValidationError(value: object): value is InputValidationError {
+    if (!('message' in value) || value['message'] === undefined) return false;
     if (!('errorDetails' in value) || value['errorDetails'] === undefined) return false;
     return true;
 }
@@ -53,7 +60,8 @@ export function InputValidationErrorFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'errorDetails': ValidationErrorDetailFromJSON(json['errorDetails']),
+        'message': json['message'],
+        'errorDetails': ((json['errorDetails'] as Array<any>).map(ValidationErrorDetailFromJSON)),
     };
 }
 
@@ -68,7 +76,8 @@ export function InputValidationErrorToJSONTyped(value?: InputValidationError | n
 
     return {
         
-        'errorDetails': ValidationErrorDetailToJSON(value['errorDetails']),
+        'message': value['message'],
+        'errorDetails': ((value['errorDetails'] as Array<any>).map(ValidationErrorDetailToJSON)),
     };
 }
 
