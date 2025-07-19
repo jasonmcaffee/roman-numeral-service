@@ -120,24 +120,19 @@ npm run start:dev
 ```
 
 ### Running with Docker
-The service is now fully containerized with Docker support. See [DOCKER.md](DOCKER.md) for detailed Docker instructions.
+The service is now fully containerized with Docker support. 
 
 #### Quick Start with Docker
 ```shell
-# Production mode
+# Start
 docker-compose up --build
-
-# Development mode with hot reloading
-docker-compose -f docker-compose.dev.yml up --build
-
-# With DataDog monitoring
-docker-compose --profile monitoring up --build
 
 # Stop
 docker-compose down
 ```
 
-For additional docker documentation and convenience , reference the [DOCKER.md](DOCKER.md) and [Makefile](Makefile)
+For additional docker documentation and convenience , reference the [Makefile](Makefile)
+
 #### datadog agent
 If you want local spans, logs, etc to go to datatog, you'll need to run the datadog-agent container
 
@@ -152,7 +147,7 @@ docker run -d --name dd-agent \
   -v /proc/:/host/proc/:ro \
   -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
   -v /var/lib/docker/containers:/var/lib/docker/containers:ro \
-  -v /tmp/roman-numeral-service.log:/var/log/roman-numeral-service.log:ro \
+  -v /app/logs/roman-numeral-service.log:/var/log/roman-numeral-service.log:ro \
   -v /tmp/roman-numeral-service.d:/conf.d/roman-numeral-service.d:ro \
   gcr.io/datadoghq/agent:7
 ```
