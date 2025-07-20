@@ -37,7 +37,7 @@ const services = loadModules(join(__dirname, 'services'), '.service.js');
     LoggerModule.forRoot({
       pinoHttp: {
         level: appConfig.isProduction() ? 'trace' : 'info',
-        stream: pino.destination('/tmp/roman-numeral-service.log'),
+        stream: pino.destination('/tmp/roman-numeral-service/roman-numeral-service.log'),
       },
     }),
     DatadogTraceModule.forRoot(),

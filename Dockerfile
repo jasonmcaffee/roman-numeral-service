@@ -37,7 +37,7 @@ COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
 COPY --from=builder --chown=nestjs:nodejs /app/env ./env
 
 # Create necessary directories and set permissions
-RUN mkdir -p /app/logs /app/src && chown -R nestjs:nodejs /app
+RUN mkdir -p /tmp/roman-numeral-service /app/src && chown -R nestjs:nodejs /app
 
 # Switch to non-root user
 USER nestjs
