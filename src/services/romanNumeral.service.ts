@@ -11,6 +11,13 @@ export class RomanNumeralService {
   constructor(private readonly traceService: TraceService) {}
 
   /**
+   * Roman Numeral Conversion documentation referenced: https://en.wikipedia.org/wiki/Roman_numerals
+   * Converting integers in range 1-3999 can be accomplished by:
+   * - First breaking the number into decimal/place values.  e.g. 123 is 1 hundreds, 2 tens, 3 units.
+   *    - We accomplish this with some simple division, flooring, and modulus operations.
+   * - Next we find the roman numeral equivalent for each decimal/place value.
+   *    - We accomplish this by having a separate array of values for each decimal/place value, then using the place value as an index to find the corresponding Roman numeral value.
+   * - Finally, we combine the Roman numerals from each place value into a single string, and return the result
    * Converts an integer in range 1-3999 to a Roman numeral.
    * @param integerToConvert - number to convert to a Roman numeral.
    */
