@@ -1,5 +1,8 @@
 # Roman Numeral Service
-Webservice that is primarily concerned with operations related to Roman numerals, such as converting integers to Roman numerals.
+The Roman Numeral Service is a robust web service that is built using the Nest.js framework.
+
+It is primarily concerned with operations related to Roman numerals, such as converting integers to Roman numerals.
+
 
 ## Quick Validation
 ```shell
@@ -68,11 +71,11 @@ e.g. user ids, request params, operation types, or results.
 Platform agnostic logger for nestjs, base on Pino, with request context in every log.
 
 ### OpenAPI/Swagger
-By using OpenAPI, we ensure downstream services, uis, and other may communicate with our service via a well defined contract.
+By using OpenAPI, we ensure downstream services, UIs, and others may communicate with our service via a well-defined contract.
 
-For example, the roman-numeral-ui generates it's client using the generated open-api spec.
+For example, the roman-numeral-ui generates its client using the generated open-api spec, and uses the client on the page to convert integers to Roman numerals.
 
-We use swagger annotations to decorate our controllers and models, so that we may generate the openapi spec from code.  This helps ensure our code and spec stay in sync.
+We use swagger annotations to decorate our controllers and models.
 
 #### OpenAPI spec generation
 The OpenAPI spec is generated when we start the service, and written to src/roman-numeral-openapi-spec.json
@@ -81,6 +84,17 @@ The OpenAPI spec is generated when we start the service, and written to src/roma
 The api docs can be viewed a the /api endpoint, and allow for viewing and trying out the various endpoints.
 http://localhost:1337/api
 ![img_4.png](img_4.png)
+
+#### Client Generation
+To help ensure our service behaves as expected, as well as ensure our schemas are properly defined, we generate a typescript client
+from our generated roman-numeral-openapi-spec.json, and the run tests using the generated client.
+
+##### Generating the Client
+
+```shell
+npm run generate-client
+```
+The generated client can be found under src/clients/roman-numeral-client
 
 ## Dev Setup
 Install node.js and dependencies
@@ -110,12 +124,12 @@ Our integration tests use the client we generate from our openapi specs to call 
 
 In them, we ensure our outputs are correct, and our error codes return the expected error details.
 
-Note: integration tests need a running service to communicate with (eg. your local running service, or a test environment)
+**Note:** integration tests need a running service to communicate with (eg. your local running service, or a test environment)
 
 ## Running The Service
 To run the service locally, run:
 ```shell
-npm run start:dev
+npm run start
 ```
 
 ### Running with Docker
@@ -133,7 +147,9 @@ docker-compose down
 For additional docker documentation and convenience , reference the [Makefile](Makefile)
 
 #### datadog agent
-If you want local spans, logs, etc to go to datatog, you'll need to run the datadog-agent container
+Running the datadog-agent container is required for metrics, logs, and traces to be sent to DataDog.
+
+It is not a requirement for running the service however, and no errors will be encountered if the agent is not running.
 
 ##### conf.d
 Log configurations passed to datadog when running docker compose.  see [docker-compose.yml](docker-compose.yml)
@@ -147,13 +163,4 @@ Useful command to see if APM, Logs, etc are running and receiving input:
 docker exec -it dd-agent agent status
 ```
 
-## Client Generation
-To help ensure our service behaves as expected, as well as ensure our schemas are properly defined, we generate a typescript client
-from our generated roman-numeral-openapi-spec.json, and the run tests using the generated client.
 
-### Generating the Client
-
-```shell
-npm run generate-client
-```
-The generated client can be found under src/clients/roman-numeral-client
