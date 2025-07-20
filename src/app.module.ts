@@ -5,6 +5,8 @@ import { LoggerModule } from 'nestjs-pino';
 import { DatadogTraceModule } from 'nestjs-ddtrace';
 import appConfig from './config/appConfig';
 import pino from 'pino';
+import { mkdirSync } from 'fs';
+mkdirSync('/tmp/roman-numeral-service', { recursive: true }); //ensure our log dir exists.
 
 // Recursive function to scan subdirectories for files with a given suffix
 // This allows us to register controllers, services, etc by convention, rather than through explicit imports.
